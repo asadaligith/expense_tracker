@@ -1,13 +1,19 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from '../../components/auth/AuthLayout';
 import Input from '../../components/input/Input';
+import { validateEmail } from '../../utils/helper';
+import { UserContext } from '../../context/UserContext';
 
 const Login = () => {
   const [email, setEmail]= useState("");
   const [password, setPassword]= useState("");
   const [error, setError]= useState(null);
+
+  const {updateUser} = useContext(UserContext);
   const navigate = useNavigate()
+
+
 
   const handleLogin = async (e)=>{
     e.preventDefault();
@@ -22,6 +28,38 @@ const Login = () => {
 
     setError("");
     //  login api call 
+    try {
+        const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+            // Note: The variable names (email, password) match the state variables
+            email,
+            password,
+        });
+
+        // Assuming the backend returns { token: '...', user: {...} }
+        const { token, user } = response.data; 
+
+        if (token) {
+            // Save token to local storage (Request Interceptor will use this)
+            localStorage.setItem("token", token);
+            updateUser(user)
+
+            // Navigate to the protected dashboard page
+            navigate("/dashboard");
+        }
+    } catch (error) {
+        // This catch block handles all errors (400, 404, network, etc.)
+        // Global 401/500/timeout handling is managed in the Response Interceptor
+
+        if (error.response && error.response.data && error.response.data.message) {
+            // Display specific error message from the server (e.g., "Invalid credentials")
+            setError(error.response.data.message);
+        } else {
+            // Display a generic error if no specific message is available
+            setError("Login failed. Please check your network or try again.");
+        }
+    }
+
+
   };
 
   return (
@@ -33,14 +71,14 @@ const Login = () => {
       <form onSubmit={handleLogin}>
         <Input
         value={email} 
-        onChange={(target)=> setEmail(target.value)}
+        onChange={(e)=> setEmail(e.target.value)}
         label="email"
         placeholder="asad@gmail.com" 
         type="text"/>
 
         <Input
         value={password} 
-        onChange={(target)=> setPassword(target.value)}
+        onChange={(e)=> setPassword(e.target.value)}
         label="password"
         placeholder="Min 8 characters" 
         type="password"/>
