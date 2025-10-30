@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from '../../components/auth/AuthLayout';
 import Input from '../../components/input/Input';
 import { validateEmail } from '../../utils/helper';
+import axiosinstance from '../../utils/axiosinstance';
+import { API_PATHS } from '../../utils/apiPath';
 import { UserContext } from '../../context/UserContext';
 
 const Login = () => {
@@ -29,7 +31,7 @@ const Login = () => {
     setError("");
     //  login api call 
     try {
-        const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        const response = await axiosinstance.post(API_PATHS.AUTH.LOGIN, {
             // Note: The variable names (email, password) match the state variables
             email,
             password,
