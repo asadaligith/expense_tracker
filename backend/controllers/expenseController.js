@@ -18,7 +18,7 @@ exports.addExpense = async (req, res) => {
         const newExpense = new Expense({
             userId, // Set the userId from the authenticated user
             icon,
-            source,
+            category,
             amount,
             date : new Date(date)
         });

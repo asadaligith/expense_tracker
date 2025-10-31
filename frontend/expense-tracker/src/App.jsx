@@ -3,10 +3,11 @@ import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom
 
 import Login from './pages/Auth/Login';
 import Home from './pages/dashboard/Home';
-import Income from './pages/Dashboard/Income';
+import Income from './pages/dashboard/Income';
 import Expense from './pages/Dashboard/Expense';
 import Signup from './pages/Auth/signup';
 import UserProvider from './context/UserContext';
+import { Toaster } from 'react-hot-toast';
 
 
 const App = () => {
@@ -22,6 +23,16 @@ const App = () => {
           <Route path="/expense" exact element={<Expense/>}/>
         </Routes>
       </Router>
+
+       <Toaster
+         toastOptions={{
+          className: "",
+          style: {
+          fontSize: '13px'
+          },
+    }}
+    />
+
       </UserProvider>
   )
 }

@@ -26,3 +26,37 @@ export const addThousandSeparators = (num) => {
   : formattedInteger;
 
 };
+
+export const prepareExpenseChartData = (data = []) => {
+    const chartData = data.map((item) => ({
+        category: item?.category,
+        amount: item?.amount,
+    }));
+
+    return chartData
+}
+
+
+export const prepareIncomeBarChartData = (data = []) => {
+    const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const chartData = sortedData.map((item) => ({
+        category: moment(item?.date).format('Do MMM'),  // ✅ X-axis pe date
+        amount: parseFloat(item?.amount) || 0,
+        source: item?.source || "Other",  // ✅ Tooltip ke liye source
+    }));
+
+    return chartData
+}
+
+
+export const prepareExpenseLineChartData = (data = []) => {
+  const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  const chartData = sortedData.map((item) => ({
+    month: moment(item?.date).format("Do MMM"),
+    amount: item?.amount,
+    category: item?.category,
+  }));
+
+  return chartData;
+};
