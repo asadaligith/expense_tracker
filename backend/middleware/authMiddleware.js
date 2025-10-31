@@ -3,8 +3,9 @@ const User = require("../models/User.js");
 
 exports.protect = async (req, res, next) => {
   let token = req.headers.authorization?.split(" ")[1];
-  if (token) {
+  if (!token) {
     return res.status(401).json({ message: "Not authorized, no token provided" });
+  }
 
 try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);  
@@ -13,7 +14,6 @@ try {
     } catch (error) {
       console.error("Error in auth middleware:", error.message);
       res.status(401).json({ message: "Not authorized, token failed" });
-    }
-  } 
+    };
+  };
 
-}

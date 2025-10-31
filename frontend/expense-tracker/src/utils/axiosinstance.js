@@ -59,7 +59,7 @@ axiosInstance.interceptors.response.use(
             // --- 401 Unauthorized Handling ---
             if (error.response.status === 401) {
                 // Redirect to login page for unauthorized access/expired token
-                window.location.href = "/login";
+                console.warn("Unauthorized (401): Token may be expired or missing.");
             } 
             // --- 500 Server Error Handling ---
             else if (error.response.status === 500) {

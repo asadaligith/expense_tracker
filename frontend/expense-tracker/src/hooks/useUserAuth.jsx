@@ -21,7 +21,7 @@ export const useUserAuth = () =>{
                 }
             }
         catch (error){
-            console.error("Failed to fatch user info : ", error)
+            console.log("Failed to fatch user info : ", error)
             if(isMounted){
                 clearUser()
                 navigate("/login")

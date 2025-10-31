@@ -48,14 +48,14 @@ const Login = () => {
             // Navigate to the protected dashboard page
             navigate("/dashboard");
         }
-    } catch (error) {
+          } catch (error) {
         // This catch block handles all errors (400, 404, network, etc.)
         // Global 401/500/timeout handling is managed in the Response Interceptor
 
-        if (error.response && error.response.data && error.response.data.message) {
+          if (error.response && error.response.data && error.response.data.message) {
             // Display specific error message from the server (e.g., "Invalid credentials")
             setError(error.response.data.message);
-        } else {
+          } else {
             // Display a generic error if no specific message is available
             setError("Login failed. Please check your network or try again.");
         }

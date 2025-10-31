@@ -6,7 +6,7 @@ const { isValidObjectId, Types } = require("mongoose");
 exports.getDashboardData = async (req, res) => {
     try {
         const userId = req.user.id;
-        const userObjectId = new new Types.ObjectId(String(userId));
+        const userObjectId = new  Types.ObjectId(String(userId));
 
         // 1. Fetch total income & expenses (All Time)
         const totalIncome = await Income.aggregate([
@@ -46,28 +46,30 @@ exports.getDashboardData = async (req, res) => {
             0
         );
 
-        // 3. Fetch last 5 transactions (income + expenses)
-        const lastTransactions = [
-            ...(await Income.find({ userId }).sort({ date: -1 }).limit(5).map(
-                (txn) => ({
-                    ...txn.toObject(),
-                    type: "income",
-                })
-            )),
-            
-            // ---> MISSING CODE STARTS HERE <---
-            
-            // Logic to fetch last 5 expenses and combine them:
-            ...(await Expense.find({ userId }).sort({ date: -1 }).limit(5).map(
-                (txn) => ({
-                    ...txn.toObject(),
-                    type: "expense",
-                })
-            )),
-        ] // Close the array definition
-        .sort((a, b) => b.date - a.date) // Sort combined array by date (latest first)
-        .slice(0, 10); // Optional: Take only the top 10 recent transactions
+        // Fetch last 5 income transactions
+const last5Income = await Income.find({ userId })
+  .sort({ date: -1 })
+  .limit(5);
 
+const mappedIncome = last5Income.map(txn => ({
+  ...txn.toObject(),
+  type: "income",
+}));
+
+// Fetch last 5 expense transactions
+const last5Expense = await Expense.find({ userId })
+  .sort({ date: -1 })
+  .limit(5);
+
+const mappedExpense = last5Expense.map(txn => ({
+  ...txn.toObject(),
+  type: "expense",
+}));
+
+// Combine and sort transactions
+const lastTransactions = [...mappedIncome, ...mappedExpense]
+  .sort((a, b) => b.date - a.date)
+  .slice(0, 10);
         // 4. Final Response
         const finalTotalIncome = totalIncome[0]?.total || 0;
         const finalTotalExpenses = totalExpense[0]?.total || 0;
