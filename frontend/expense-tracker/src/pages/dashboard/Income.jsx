@@ -149,7 +149,7 @@ const handleDownloadIncomeDetails = async () => {
           onDelete={(id) => {
             setOpenDeleteAlert({ show: true, data:id });
           }}
-          onDownlaod={handleDownloadIncomeDetails}
+          onDownload={handleDownloadIncomeDetails}
           />
         </div>
 
