@@ -1,6 +1,7 @@
 const xlsx = require('xlsx')
 const Expense = require("../models/Expense");
 
+
 // Add all Expense Source
 exports.addExpense = async (req, res) => {
     // Assuming userId is attached to the request object by the 'protect' middleware
@@ -16,7 +17,7 @@ exports.addExpense = async (req, res) => {
 
         // Create the new income document
         const newExpense = new Expense({
-            userId, // Set the userId from the authenticated user
+            userId, 
             icon,
             category,
             amount,
@@ -29,7 +30,7 @@ exports.addExpense = async (req, res) => {
         // Respond with success and the created object
         res.status(200).json({ 
             message: "Expense added successfully", 
-            income: Expense 
+            income: newExpense 
         });
 
     } catch (error) {
@@ -84,7 +85,7 @@ exports.downloadExpenseExcel = async (req, res) => {
 
         const wb = xlsx.utils.book_new();
         const ws = xlsx.utils.json_to_sheet(data);
-        xlsx.utils.book_append_sheet(wb, ws, "Income");
+        xlsx.utils.book_append_sheet(wb, ws, "Expense");
         xlsx.writeFile(wb, 'expense_details.xlsx');
         res.download('expense_details.xlsx');
     } catch (error) {

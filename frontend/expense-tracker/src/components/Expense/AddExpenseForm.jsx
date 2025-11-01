@@ -5,14 +5,14 @@ import { HiDeviceMobile } from "react-icons/hi";
 import { LuCircleDivide } from "react-icons/lu";
 
 const AddExpenseForm = ({ onAddExpense }) => {
-  const [income, setIncome] = useState({
+  const [expense, setExpense] = useState({
     category: "",
     amount: "",
     date: "",
     icon: "",
   });
 
-  const handleChange = (key, value) => setIncome({ ...income, [key]: value });
+  const handleChange = (key, value) => setExpense({ ...expense, [key]: value });
 
   return (
     <div className="className">
@@ -49,7 +49,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
   <button
     type="button"
     className="add-btn add-btn-fill"
-    onClick={() => onAddExpense(income)}
+    onClick={() => onAddExpense(expense)}
   >
     Add Expense
   </button>

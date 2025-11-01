@@ -5,8 +5,6 @@ import { BASE_URL } from "./apiPath"; // Assuming this is the file from the prev
 const axiosInstance = axios.create({
     // Sets the base URL for all requests made using this instance
     baseURL: BASE_URL,
-    
-    // Sets a timeout of 10 seconds (10,000 milliseconds) for requests
     timeout: 10000,
     
     // Defines default headers for all requests
